@@ -33,6 +33,7 @@
 
     // draw the axis
     const xAxis = d3.axisBottom(xScale); //X axis
+    
     g.append("g")
         .attr("transform", "translate(0," + h + ")")
         .attr("class", "axis")
@@ -56,21 +57,20 @@
         .data(dataset)
         .enter()
         .append("rect")
-        .attr("x", (d, i) => {
+        .attr("x", (d, i) => {//d je vrednost iz niza.
             return xScale(i);//koordinate za tik, odnosno sredinu pojedinacnog bar-a.
         }) //the displacement along the x is dependendant on the index and the xScale
         .attr("y", (d) => { 
-            //console.log(d, yScale(d));
-            return yScale(d)
+            return yScale(d);//Proracunata vrednost displejsmenta od vrha. 
         }) //the displacement along the y is dependant on the value and the yScale
         .attr("height", (d) => { 
-            
-            return h - yScale(d); 
+            return h - yScale(d); //Proracun visine pojedinacnog bara.
         }) //the height is the difference between the displacement down and the height of the chart h
-        .attr("width", xScale.bandwidth()) //the width of the rectangles is dependant on the bandwidth
+        .attr("width", xScale.bandwidth()) //Proracun sirine el. bez padinga. //the width of the rectangles is dependant on the bandwidth
         .attr("class", "bar")
         .append("title")
         .text((item, i) => {
+            //console.log(xScale.bandwidth());//
             return item;
         });
 
