@@ -1,4 +1,5 @@
     const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
+    dataset.sort((a, b) => {return b - a});
 
     const w = 500;
     const h = 500;
@@ -16,7 +17,7 @@
     // the xScale for the bar chart will be a band scale
     /*range je duzina linije po x osi koja se gleda od sirine svg-a.
     domain su vrednosti koje se automatski nalaze kada se indeksi dataset-a
-    uzmu kao parametar. Zatim se indeksi pravilno raporede po sirini(width-w), tj. range-u.*/
+    uzmu kao parametar. Zatim se indeksi pravilno rasporede po sirini(width-w), tj. range-u.*/
     let xScale = d3.scaleBand()
             .range([0, w])
             .padding(0.1)//Since the domain is about the index of the values, the domain must be an array of the indices for the x-axis scale
@@ -52,6 +53,8 @@
     kao parametar za x i y koordinatu bar-a.
     */
 
+    let rect = [];
+
     //draw the rectangles
     g.selectAll("rect")
         .data(dataset)
@@ -70,10 +73,21 @@
         .attr("class", "bar")
         .append("title")
         .text((item, i) => {
-            //console.log(xScale.bandwidth());//
+            rect.push({
+                value: item,
+                index: i,
+                w: w,
+                h: h,
+                xScale: xScale(i),
+                yScale: yScale(item),
+                elemWidth: xScale.bandwidth(),
+                elemHeight: h - yScale(item),
+            });
+            
             return item;
         });
 
+        console.log(rect);
 
     //Draw the  Chart Label:
     svg.append("text")
